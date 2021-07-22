@@ -1,1 +1,57 @@
+<span id="ajaxButton" style="cursor: pointer; text-decoration: underline">
+  Ping to Worye!
+</span>
+<script type="text/javascript">
+(function() {
+  var httpRequest;
+  //document.getElementById("ajaxButton").onclick = function() { active() };
+  active()
 
+  function active() {
+    for (let i=0; i<10; i++) {
+       loop(i);
+    }
+  }
+
+  function loop(i) {
+    setTimeout(function() {
+        makeRequest('https://Distest.isonork.repl.co');
+    }, 5000 * i);
+  }
+  
+  function makeRequest(url) {
+    if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+      httpRequest = new XMLHttpRequest();
+    } else if (window.ActiveXObject) { // IE
+      try {
+        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+      }
+      catch (e) {
+        try {
+          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch (e) {}
+      }
+    }
+
+    if (!httpRequest) {
+      alert('Giving up :( Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.onreadystatechange = alertContents;
+    httpRequest.open('GET', url);
+    httpRequest.send();
+    document.location.reload(true);
+  }
+
+  function alertContents() {
+    if (httpRequest.readyState === 4) {
+      if (httpRequest.status === 200) {
+        alert(httpRequest.responseText);
+      } else {
+        alert('There was a problem with the request.');
+      }
+    }
+  }
+})();
+</script>
